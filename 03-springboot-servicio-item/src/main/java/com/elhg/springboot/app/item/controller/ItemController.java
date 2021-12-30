@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.elhg.springboot.app.item.models.Item;
@@ -22,7 +24,11 @@ public class ItemController {
 	private ItemService itemService;
 
 	@GetMapping("/listar")
-	public List<Item> listar(){
+	// Se agregan parametros en el filter 
+	public List<Item> listar(@RequestParam(name="nombre", required=false) String nombre,
+							 @RequestHeader(name="token-request", required=false) String token){
+		System.out.println("Parametros que se anexan en el filter factory son Opcionales:");
+		System.out.println(nombre+" - "+token);
 		return itemService.findAll();
 	}
 	

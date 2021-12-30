@@ -5,13 +5,33 @@ spring:
       - id: servicio-productos
         uri: lb://servicio-productos
         predicates:          - Path=/api/productos/**
+#          - Header=token, \d+
+#          - Method=GET, POST
+#          - Query=color, verde
+#          - Cookie=color, azul
         filters:          - StripPrefix=2
+          - EjemploCookie=Hola otro mensaje personalizado, usuario, ElielHerrera
+#         - name: Ejemplo
+#            args:
+#             mensaje: Hola mi mensaje personalizado
+#              cookieNombre: usuario
+#              cookieValor: ElielHerrera 
       - id: servicio-items
         uri: lb://servicio-items
         predicates:
           - Path=/api/items/**
         filters:
-          - StripPrefix=2          
+          - StripPrefix=2
+          - AddRequestHeader=token-request, 123456
+          - AddResponseHeader=token-response, 12345678
+          - SetResponseHeader=Content-Type, text/plain
+          - AddRequestParameter=nombre, eliel
+
+# Predicates son reglas o restricciones del request, para consumir ese endpoint
+
+# Filtros Gateway Factory que vienen de fabrica: AddRequestHeader, AddResponseHeader, AddRequestParameter
+
+
 #lb://servicio-productos      Acceder mediante balanceo de cargas al servicio
 #- Path=/api/productos/**     Puede haber varios tipos de predicate, por rutas  etc
 #- StripPrefix=2              El Path esta compuesto por 2 segmentos (api, productos)
